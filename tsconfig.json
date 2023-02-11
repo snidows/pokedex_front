@@ -20,6 +20,15 @@
     "noEmit": true,
     "jsx": "react-jsx"
   },
+  "plugins": [
+    {
+      "name": "typescript-styled-plugin",
+      "tags": [
+        "styled",
+        "css", /*and others that you like it!*/
+      ]
+    }
+  ],
   "include": [
     "src"
   ]
