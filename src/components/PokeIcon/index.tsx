@@ -6,7 +6,7 @@ export const PokeIcon = ({
   avatarUrl,
 }: {
   name: string;
-  id: string;
+  id: number;
   avatarUrl: string;
 }): JSX.Element => {
   return (

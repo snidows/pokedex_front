@@ -11,11 +11,9 @@ export const Container = styled.div`
   background-color: ${colors.red_base};
 `;
 
-
-
 export const MenuDiv = styled.div`
   height: 100vh;
-  width: 20%;
+  width: 15%;
   margin-left: 0;
   padding: 0;
   display: flex;
@@ -46,12 +44,24 @@ export const MenuDivSearch = styled.input`
 
 export const ActionDiv = styled.div`
   height: 97vh;
-  width: 79%;
+  width: 84vw;
   margin: 0;
   padding: 0;
-  display: flex;
+  display: flex; 
+  flex-direction:column;
   border-radius:20px;
-  /* flex-direction: column; */
   align-items:center;
+  justify-content:center;
   background-color: ${colors.white_black_light};
+`;
+
+
+export const ActionDivPokemons = styled.div`
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-wrap:wrap;
+  align-items:center;
+  justify-content:center;
+  /* background-color: red; */
 `;

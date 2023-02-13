@@ -1,7 +1,7 @@
 export interface PokemonListResult {
   count: number;
   next: string;
-  previous: number;
+  previous: string;
   results: PokemonListUnit[];
 }
 
@@ -58,7 +58,7 @@ export interface BaseStatusPokemon {
 
 export interface PokemonDTO {
   abilities: PokemonAbilities[];
-  base_experience: 64;
+  base_experience: number;
   forms: PokemonForms[];
   game_indices: PokemonIndices[];
   height: number;

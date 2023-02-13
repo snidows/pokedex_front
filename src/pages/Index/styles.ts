@@ -30,12 +30,12 @@ display: flex;
 flex-direction:column;
 align-items:center;
 `
-export const TextHigh=styled.text`
+export const TextHigh=styled.div`
   font-size: 32px;
   font-weight: bold;
 `
 
-export const TextLow=styled.text`
+export const TextLow=styled.div`
   font-size: 22px;
 `
 

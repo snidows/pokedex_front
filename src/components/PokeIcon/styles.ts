@@ -1,8 +1,8 @@
 import styled from "styled-components";
 import { colors } from "../../shared/colors";
 export const Container = styled.div`
-  height: 200px;
-  width: 200px;
+  height: 150px;
+  width: 150px;
   display: flex;
   flex-direction: column;
   border-width: 12px;
@@ -20,25 +20,24 @@ export const Container = styled.div`
 export const Header = styled.div`
   height: 10%;
   width: 100%;
-  font-size: 18px;
+  font-size: 14px;
   text-align: right;
 
 `;
 
 export const Center = styled.div`
-  /* height: 80%; */
   width: 100%;
 `;
 
 export const Avatar = styled.img`
-  height: 140px;
-  width: 140px;
+  height:100px;
+  width: 100px;
 `;
 
 export const Boton = styled.div`
   height: 20%;
   width: 100%;
-  font-size: 32px;
+  font-size: 20px;
   text-align: center;
 
 `;

@@ -1,58 +1,76 @@
 import { useEffect, useState } from "react";
-import { PokeIcon } from "../../../components/PokeIcon";
 import {
   PokemonDTO,
-  PokemonIndices,
   PokemonListResult,
   PokemonListUnit,
 } from "../../../entities/pokemonList";
+import { PokeIcon } from "../../../components/PokeIcon";
 
 export const usePokedexController = () => {
+  const [pageNumber, setPageNumber] = useState<number>(0);
+
+  const [backPage, setBackPage] = useState<null | string>(null);
+  const [nextPage, setNextPage] = useState<null | string>(
+    process.env.REACT_APP_POKEMON_LIST as string
+  );
+
+  const [pokemonList, setPokemonList] = useState<PokemonListUnit[]>([]);
   const [pokemonIcons, setPokemonIcons] = useState<JSX.Element[]>([]);
 
-  const processListPokemons = async () => {
-    const data = await fetch(process.env.REACT_APP_POKEMON_LIST as string);
+  const getPokemonsAndSetIcons = async (pageFindUrl: string) => {
+    const pokeList: any = {};
 
-    if (data.ok) {
-      const list: JSX.Element[] = [];
-      const result_data = (await data.json()) as PokemonListResult;
+    const response = await fetch(pageFindUrl);
 
-      result_data.results.forEach(async (pokemon: PokemonListUnit) => {
-        const avatarUrl = await getAvatarUrlByPokemonName(pokemon.name);
-        const pokemonResult = await fetch(pokemon.url).then(async response=>{
-          if(response.ok){
-            return await response.json() as PokemonDTO
-          }else return null
-        });
-        if(pokemonResult) console.log(pokemonResult)
-        if (avatarUrl)
-          list.push(
-            <PokeIcon
-              avatarUrl={avatarUrl}
-              name={pokemon.name}
-              id="#001"
-              key={`poke-name-${pokemon.name}`}
-            />
-          );
-        setPokemonIcons(list);
-      });
+    if (!response.ok) return;
+
+    const pokemonsListResult = (await response.json()) as PokemonListResult;
+
+    setBackPage(pokemonsListResult.previous);
+    setNextPage(pokemonsListResult.next);
+    setPokemonList(pokemonsListResult.results);
+  };
+
+  const nextPageSelect = () => {
+    if (nextPage) {
+      getPokemonsAndSetIcons(nextPage);
+      setPageNumber(pageNumber + 1);
+    }
+  };
+  const backPageSelect = () => {
+    if (backPage) {
+      getPokemonsAndSetIcons(backPage);
+      setPageNumber(pageNumber - 1);
     }
   };
 
-  const getAvatarUrlByPokemonName = async (
-    name: string
-  ): Promise<string | null> => {
-    const data = await fetch(`https://pokeapi.co/api/v2/pokemon/${name}`);
-    if (data.ok) {
-      const result_data = await data.json();
-      return result_data.sprites.other["official-artwork"].front_default;
-    } else return null;
+  useEffect(() => {
+    if (nextPage) getPokemonsAndSetIcons(nextPage);
+  }, []);
+
+  const processIconPokemons = async () => {
+    const cardIconsPokemons: JSX.Element[] = [];
+    for (let i = 0; i < pokemonList.length; i++) {
+      const dataPokemon = (await (
+        await fetch(pokemonList[i].url)
+      ).json()) as PokemonDTO;
+      cardIconsPokemons.push(
+        <PokeIcon
+          avatarUrl={
+            dataPokemon.sprites.other["official-artwork"].front_default
+          }
+          id={dataPokemon.id}
+          name={dataPokemon.name}
+          key={dataPokemon.name}
+        />
+      );
+    }
+    setPokemonIcons(cardIconsPokemons);
   };
 
   useEffect(() => {
-    if (pokemonIcons.length !== 0) return;
-    processListPokemons();
-  }, [pokemonIcons]);
+    if (pokemonList.length > 19) processIconPokemons();
+  }, [pokemonList]);
 
-  return { pokemonIcons };
+  return { pokemonIcons, nextPageSelect, backPageSelect,pageNumber };
 };
