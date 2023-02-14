@@ -11,7 +11,8 @@ import { NavigatorPokedex } from "../../components/NavigatorPokedex";
 import { ModalComponent } from "../../components/modal";
 import { useState } from "react";
 import { PlayerNameComponent } from "../../components/PlayerName";
-import { useApiController } from "./controller/useApiController";
+import { useTimeController } from "./controller/useApiController";
+import { TimeNameComponent } from "../../components/TimeName";
 
 export const PokeDexPage = (): JSX.Element => {
   const {
@@ -22,10 +23,20 @@ export const PokeDexPage = (): JSX.Element => {
     pokemonCard,
     renderIconPokemons,
     pokemonsData,
-    actionClickPokemonCard
+    actionClickPokemonCard,
   } = usePokedexController();
 
-  const { name, playerName, setName, setPlayerNameAction } = useApiController();
+  const {
+    name,
+    playerName,
+    setName,
+    setPlayerNameAction,
+    creatingTime,
+    setCreatingTimeOn,
+    setCreatingTimeOff,
+    pushOrRemovePokemonToTeam,
+    teamMembersList,
+  } = useTimeController();
 
   const [action, setAction] = useState<string>("");
 
@@ -40,24 +51,56 @@ export const PokeDexPage = (): JSX.Element => {
                 pokemons.id,
                 pokemons.name,
                 pokemons.name,
-                () => actionClickPokemonCard(pokemons)
+                () => actionClickPokemonCard(pokemons),
+                null
               );
             })}
           </ActionDivPokemons>
-          {/* <ActionDivPokemons>{pokemonIcons}</ActionDivPokemons> */}
           <NavigatorPokedex
             page={pageNumber}
             next={nextPageSelect}
             back={backPageSelect}
-          ></NavigatorPokedex>
+          />
         </>
       );
     else if (action === "listar_times") {
       return <>Listar Times</>;
     } else if (action === "criar_times") {
-      return <>Criar Times</>;
+      return (
+        <>
+          {creatingTime ? (
+            <>
+              <ActionDivPokemons>
+                {pokemonsData.map((pokemons) => {
+                  return renderIconPokemons(
+                    pokemons.sprites.other["official-artwork"].front_default,
+                    pokemons.id,
+                    pokemons.name,
+                    pokemons.name,
+                    () => pushOrRemovePokemonToTeam(pokemons),
+                    teamMembersList
+                  );
+                })}
+                
+              </ActionDivPokemons>
+              <NavigatorPokedex
+                page={pageNumber}
+                next={nextPageSelect}
+                back={backPageSelect}
+              />
+              {/* <button onClick={() => setCreatingTimeOff()}>cancelar</button> */}
+            </>
+          ) : (
+            <TimeNameComponent
+              action={() => setCreatingTimeOn()}
+              getName={() => console.log()}
+            />
+          )}
+        </>
+      );
     }
   };
+
   return (
     <Container>
       <MenuDiv>

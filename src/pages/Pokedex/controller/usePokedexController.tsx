@@ -35,9 +35,9 @@ export const usePokedexController = () => {
   };
 
   useEffect(() => {
-     getDataPokemon().then(pokeData=>{
+    getDataPokemon().then((pokeData) => {
       setPokemonsData(pokeData);
-     })    
+    });
   }, [pokemonList]);
 
   const nextPageSelect = () => {
@@ -91,8 +91,13 @@ export const usePokedexController = () => {
     id: number,
     name: string,
     key: string,
-    action: Function
+    action: Function,
+    teamMembers: string[] | null
   ) => {
+    let checked = false;
+    if (teamMembers) {
+      teamMembers.includes(name) ? (checked = true) : (checked = false);
+    }
     return (
       <PokeIcon
         avatarUrl={avatarUrl}
@@ -100,6 +105,7 @@ export const usePokedexController = () => {
         name={name}
         key={key}
         action={() => action()}
+        checked={checked}
       />
     );
   };
@@ -116,6 +122,6 @@ export const usePokedexController = () => {
     pokemonCard,
     renderIconPokemons,
     pokemonsData,
-    actionClickPokemonCard
+    actionClickPokemonCard,
   };
 };
