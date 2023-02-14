@@ -10,6 +10,7 @@ import { useState } from "react";
 import { PlayerNameComponent } from "../../components/PlayerName";
 import { PokedexView } from "./views/pokedex";
 import { TimeManagerPage } from "./views/timeManager";
+import { MenuPokedexComponent } from "../../components/MenuPokedex";
 
 export const PokeDexPage = (): JSX.Element => {
   const [action, setAction] = useState<string>("");
@@ -32,35 +33,8 @@ export const PokeDexPage = (): JSX.Element => {
       <MenuDiv>
         <MenuDivHeader>Pokédex</MenuDivHeader>
         {playerName ? <>Player: {playerName}</> : <></>}
-        {playerName ? (
-          <>
-            <ButtonComponent
-              onClick={() => {
-                setAction("listar_pokemons");
-              }}
-            >
-              Pokédex
-            </ButtonComponent>
-            <ButtonComponent
-              onClick={() => {
-                setAction("criar_times");
-              }}
-            >
-              Criar Times
-            </ButtonComponent>
-            <ButtonComponent
-              onClick={() => {
-                setAction("listar_times");
-              }}
-            >
-              Listar Times
-            </ButtonComponent>
-          </>
-        ) : (
-          <></>
-        )}
+        {playerName ? <MenuPokedexComponent action={setAction} /> : <></>}
       </MenuDiv>
-      {/* <ModalComponent open={showCardPokemon} component={pokemonCard} /> */}
       <ActionDiv>
         {playerName ? (
           renderActionMenu(action)

@@ -1,4 +1,5 @@
 import { NavigatorPokedex } from "../../../components/NavigatorPokedex";
+import { ModalComponent } from "../../../components/modal";
 import { usePokedexController } from "../controller/usePokedexController";
 import { ActionDivPokemons } from "../styles";
 
@@ -15,6 +16,7 @@ export const PokedexView = () => {
   } = usePokedexController();
   return (
     <>
+    <ModalComponent open={showCardPokemon} component={pokemonCard} />
       <ActionDivPokemons>
         {pokemonsData.map((pokemons) => {
           return renderIconPokemons(
