@@ -11,7 +11,7 @@ export const NavigatorPokedex = ({
 }): JSX.Element => {
   return (
     <Container>
-      <AiOutlineArrowLeft size={"30px"} onClick={()=>back()}/>
+      <AiOutlineArrowLeft size={"30px"} onClick={()=>{back()}}/>
       <PageShow>{page}</PageShow>
       <AiOutlineArrowRight size={"30px"} onClick={()=>next()}/>
     </Container>
