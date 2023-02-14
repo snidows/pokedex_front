@@ -1,11 +1,15 @@
 import { useState } from "react";
 import { PokemonDTO } from "../../../entities/pokemonList";
+import { PokeTeamDTO } from "../../../entities/pokemonApi";
+import { toast } from "react-toastify";
 
 export const useTimeController = () => {
   const [name, setName] = useState<string>("");
-  const [playerName, setPlayerName] = useState<null | string>("lucas");
+  const [playerName, setPlayerName] = useState<null | string>(null);
+  const [teamName, setTeamName] = useState<null | string>(null);
   const [teamMembers, setTeamMembers] = useState<PokemonDTO[]>([]);
   const [teamMembersList, setTeamMembersList] = useState<string[]>([]);
+
   const [creatingTime, setCreatingTime] = useState<boolean>(false);
   const [existingTeam, setExistingTeam] = useState<number | null>(null);
 
@@ -29,7 +33,6 @@ export const useTimeController = () => {
         setTeamMembersList([...teamList]);
       }
     }
-    console.log(teamMembersList);
   };
 
   const setPlayerNameAction = () => {
@@ -41,18 +44,60 @@ export const useTimeController = () => {
   };
   const setCreatingTimeOff = () => {
     setCreatingTime(false);
+    setTeamMembersList([]);
+    setTeamMembers([]);
+    setTeamName(null);
   };
 
   const saveTime = () => {
     if (existingTeam) {
       console.log("atualizar time");
     } else {
-      console.log("salvar um novo");
+      if (!playerName) return;
+      if (!teamName) return;
+      const team: PokeTeamDTO = {
+        playerName: playerName,
+        teamMembers: teamMembersList,
+        timeName: teamName,
+      };
+
+      const requestOptions = {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(team),
+      };
+
+      fetch("http://localhost:4444/pokedex/teams", requestOptions).then(
+        (result) => {
+          if (result.status === 201) resetChoices(true);
+          else
+            console.log("algum erro aconteceu e nao foi possivel criar o time");
+        }
+      );
+    }
+  };
+
+  const resetChoices = (result: boolean) => {
+    if (result) {
+      setCreatingTimeOff();
     }
   };
 
   const listTimes = () => {
-    fetch("api buscar os dados de todos os times e plotar na tela");
+    const requestOptions = {
+      method: "GET",
+      headers: { "Content-Type": "application/json" },
+    };
+
+    fetch("http://localhost:4444/pokedex/teams", requestOptions).then(
+      async (result) => {
+        if (result.status === 200) {
+          console.log(await result.json())
+        }
+        else
+          console.log("algum erro aconteceu e nao foi possivel criar o time");
+      }
+    );
   };
 
   const atualizarTimes = () => {
@@ -73,5 +118,8 @@ export const useTimeController = () => {
     setCreatingTimeOff,
     pushOrRemovePokemonToTeam,
     teamMembersList,
+    saveTime,
+    setTeamName,
+    listTimes
   };
 };

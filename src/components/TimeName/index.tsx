@@ -1,25 +1,25 @@
-import { useState } from "react";
 import { BtnInputAction, Container, TextDiv, TextInput } from "./styles";
 
 export const TimeNameComponent = ({
   action,
+  setNameTeam
 }: {
   action: Function;
-  getName: Function;
+  setNameTeam: Function;
 }) => {
-  const [name, setName] = useState("");
+
 
   return (
     <Container>
       <TextDiv>Qual o nome do Time?</TextDiv>
       <TextInput
         onChange={(e) => {
-          setName(e.target.value);
+          setNameTeam(e.target.value);
         }}
       />
       <BtnInputAction
         onClick={() => {
-          action(name);
+          action();
         }}
       >
         AVANÇAR

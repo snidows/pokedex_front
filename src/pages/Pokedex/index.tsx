@@ -1,103 +1,29 @@
 import {
   ActionDiv,
-  ActionDivPokemons,
   ButtonComponent,
   Container,
   MenuDiv,
   MenuDivHeader,
 } from "./styles";
-import { usePokedexController } from "./controller/usePokedexController";
-import { NavigatorPokedex } from "../../components/NavigatorPokedex";
 import { ModalComponent } from "../../components/modal";
 import { useState } from "react";
 import { PlayerNameComponent } from "../../components/PlayerName";
-import { useTimeController } from "./controller/useApiController";
-import { TimeNameComponent } from "../../components/TimeName";
+import { PokedexView } from "./views/pokedex";
+import { TimeManagerPage } from "./views/timeManager";
 
 export const PokeDexPage = (): JSX.Element => {
-  const {
-    nextPageSelect,
-    backPageSelect,
-    pageNumber,
-    showCardPokemon,
-    pokemonCard,
-    renderIconPokemons,
-    pokemonsData,
-    actionClickPokemonCard,
-  } = usePokedexController();
-
-  const {
-    name,
-    playerName,
-    setName,
-    setPlayerNameAction,
-    creatingTime,
-    setCreatingTimeOn,
-    setCreatingTimeOff,
-    pushOrRemovePokemonToTeam,
-    teamMembersList,
-  } = useTimeController();
-
   const [action, setAction] = useState<string>("");
-
+  const [playerName, setPlayerName] = useState<string | null>(null);
   const renderActionMenu = (action: string) => {
-    if (action === "listar_pokemons")
-      return (
-        <>
-          <ActionDivPokemons>
-            {pokemonsData.map((pokemons) => {
-              return renderIconPokemons(
-                pokemons.sprites.other["official-artwork"].front_default,
-                pokemons.id,
-                pokemons.name,
-                pokemons.name,
-                () => actionClickPokemonCard(pokemons),
-                null
-              );
-            })}
-          </ActionDivPokemons>
-          <NavigatorPokedex
-            page={pageNumber}
-            next={nextPageSelect}
-            back={backPageSelect}
-          />
-        </>
-      );
+    if (action === "listar_pokemons") return <PokedexView />;
     else if (action === "listar_times") {
-      return <>Listar Times</>;
-    } else if (action === "criar_times") {
       return (
         <>
-          {creatingTime ? (
-            <>
-              <ActionDivPokemons>
-                {pokemonsData.map((pokemons) => {
-                  return renderIconPokemons(
-                    pokemons.sprites.other["official-artwork"].front_default,
-                    pokemons.id,
-                    pokemons.name,
-                    pokemons.name,
-                    () => pushOrRemovePokemonToTeam(pokemons),
-                    teamMembersList
-                  );
-                })}
-                
-              </ActionDivPokemons>
-              <NavigatorPokedex
-                page={pageNumber}
-                next={nextPageSelect}
-                back={backPageSelect}
-              />
-              {/* <button onClick={() => setCreatingTimeOff()}>cancelar</button> */}
-            </>
-          ) : (
-            <TimeNameComponent
-              action={() => setCreatingTimeOn()}
-              getName={() => console.log()}
-            />
-          )}
+          <button>clica aqui</button>
         </>
       );
+    } else if (action === "criar_times") {
+      return <TimeManagerPage />;
     }
   };
 
@@ -134,12 +60,12 @@ export const PokeDexPage = (): JSX.Element => {
           <></>
         )}
       </MenuDiv>
-      <ModalComponent open={showCardPokemon} component={pokemonCard} />
+      {/* <ModalComponent open={showCardPokemon} component={pokemonCard} /> */}
       <ActionDiv>
         {playerName ? (
           renderActionMenu(action)
         ) : (
-          <PlayerNameComponent action={setPlayerNameAction} getName={setName} />
+          <PlayerNameComponent action={setPlayerName} />
         )}
       </ActionDiv>
     </Container>
