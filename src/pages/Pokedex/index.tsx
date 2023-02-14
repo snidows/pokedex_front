@@ -15,13 +15,11 @@ import { useNavigate } from "react-router-dom";
 export const PokeDexPage = (): JSX.Element => {
   const { pokemonIcons, nextPageSelect, backPageSelect, pageNumber,showCardPokemon,pokemonCard } =
     usePokedexController();
-const navigator=useNavigate()
   return (
     <Container>
       <MenuDiv>
         <MenuDivHeader>Pokédex</MenuDivHeader>
         <MenuDivSearch></MenuDivSearch>
-        <ButtonComponent onClick={()=>{navigator("/")}}>Voltar ao Menu</ButtonComponent>
       </MenuDiv>
       <ModalComponent
       open={showCardPokemon}
