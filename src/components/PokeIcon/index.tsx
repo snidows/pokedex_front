@@ -4,13 +4,15 @@ export const PokeIcon = ({
   name,
   id,
   avatarUrl,
+  action
 }: {
   name: string;
   id: number;
   avatarUrl: string;
+  action:Function
 }): JSX.Element => {
   return (
-    <Container>
+    <Container onClick={()=>action()}>
       <Header>{id}</Header>
       <Center>
         <Avatar src={avatarUrl} />

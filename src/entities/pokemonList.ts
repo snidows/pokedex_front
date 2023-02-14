@@ -251,5 +251,14 @@ export interface PokemonDTO {
     };
   };
   stats: BaseStatusPokemon[];
+  types: PokemonType[];
   weight: number;
+}
+
+export interface PokemonType {
+  slot: number;
+  type: {
+    name: string;
+    url: string;
+  };
 }

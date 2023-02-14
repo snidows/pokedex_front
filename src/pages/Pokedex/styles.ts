@@ -65,3 +65,15 @@ export const ActionDivPokemons = styled.div`
   justify-content:center;
   /* background-color: red; */
 `;
+
+// export const PokemonDivCard = styled.div`
+//   height: 500px;
+//   width: 500px;
+//   display: block;
+//   position:fixed
+//   padding-top:0px;
+//   left: 0;
+//   top:0;
+//   /* display: f; */
+//   background-color: blue;
+// `;

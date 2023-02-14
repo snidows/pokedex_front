@@ -8,9 +8,11 @@ import {
 } from "./styles";
 import { usePokedexController } from "./controller/usePokedexController";
 import { NavigatorPokedex } from "../../components/NavigatorPokedex";
+import { ModalComponent } from "../../components/modal";
 
 export const PokeDexPage = (): JSX.Element => {
-  const { pokemonIcons, nextPageSelect,backPageSelect, pageNumber } = usePokedexController();
+  const { pokemonIcons, nextPageSelect, backPageSelect, pageNumber,showCardPokemon,pokemonCard } =
+    usePokedexController();
 
   return (
     <Container>
@@ -18,7 +20,11 @@ export const PokeDexPage = (): JSX.Element => {
         <MenuDivHeader>Pokédex</MenuDivHeader>
         <MenuDivSearch></MenuDivSearch>
       </MenuDiv>
+      <ModalComponent
+      open={showCardPokemon}
+      component={pokemonCard}/>
       <ActionDiv>
+      {/* <PokemonDivCard></PokemonDivCard> */}
         <ActionDivPokemons>{pokemonIcons}</ActionDivPokemons>
         <NavigatorPokedex
           page={pageNumber}
