@@ -9,6 +9,7 @@ export const Container = styled.div`
   flex-direction: line;
   align-items:center;
   background-color: ${colors.red_base};
+  overflow: hidden;
 `;
 
 export const MenuDiv = styled.div`

@@ -1,21 +1,17 @@
 import { useEffect } from "react";
 import { NavigatorPokedex } from "../../../components/NavigatorPokedex";
 import { TimeNameComponent } from "../../../components/TimeName";
-import { PokemonDTO } from "../../../entities/pokemonList";
 import { useTimeController } from "../controller/useApiController";
 import { usePokedexController } from "../controller/usePokedexController";
 import { ActionDivPokemons } from "../styles";
 
 export const TimeManagerPage = ({ playerName }: { playerName: string }) => {
   const {
-    setName,
     creatingTime,
     setCreatingTimeOn,
-    setCreatingTimeOff,
     pushOrRemovePokemonToTeam,
     teamMembersList,
     saveTime,
-    setTeamName,
     resetChoices,
   } = useTimeController(playerName);
 

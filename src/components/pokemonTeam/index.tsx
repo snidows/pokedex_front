@@ -1,53 +1,30 @@
+import { PokeTeam, PokemonData } from "../../entities/pokemonTeams";
 import { PokeIcon } from "../PokeIcon";
 import { Container, NameDiv, PokemonAvatarContainer } from "./styles";
 
-export const PokeTeamComponent = () => {
+export const PokeTeamComponent = ({
+  teamName,
+  teamList,
+}: {
+  teamName: string;
+  teamList: PokeTeam[];
+}) => {
   return (
     <Container>
-      <NameDiv>TIME BATATA</NameDiv>
+      <NameDiv>{teamName}</NameDiv>
       <PokemonAvatarContainer>
-        <PokeIcon
-          action={() => {}}
-          avatarUrl="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/1.png"
-          checked={false}
-          id={1}
-          name="bulbasaur"
-        />
-        <PokeIcon
-          action={() => {}}
-          avatarUrl="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/1.png"
-          checked={false}
-          id={1}
-          name="bulbasaur"
-        />
-        <PokeIcon
-          action={() => {}}
-          avatarUrl="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/1.png"
-          checked={false}
-          id={1}
-          name="bulbasaur"
-        />
-        <PokeIcon
-          action={() => {}}
-          avatarUrl="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/1.png"
-          checked={false}
-          id={1}
-          name="bulbasaur"
-        />
-        <PokeIcon
-          action={() => {}}
-          avatarUrl="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/1.png"
-          checked={false}
-          id={1}
-          name="bulbasaur"
-        />
-        <PokeIcon
-          action={() => {}}
-          avatarUrl="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/1.png"
-          checked={false}
-          id={1}
-          name="bulbasaur"
-        />
+        {teamList.map((pokemonName) => {
+          return (
+            <PokeIcon
+              action={() => {}}
+              avatarUrl={pokemonName.avatarUrl}
+              checked={false}
+              id={pokemonName.id}
+              name={pokemonName.name}
+              key={`${Math.random}_${pokemonName.name}`}
+            />
+          );
+        })}
       </PokemonAvatarContainer>
     </Container>
   );

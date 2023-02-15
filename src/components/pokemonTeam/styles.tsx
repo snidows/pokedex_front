@@ -10,6 +10,7 @@ export const Container = styled.div`
   border-radius: 20px;
   border-width: thin;
   border: solid;
+  margin-top:15px;
   border-color: ${colors.red_base_light};
   gap: 30px;
   justify: center;
