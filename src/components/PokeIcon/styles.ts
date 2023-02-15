@@ -5,8 +5,12 @@ interface ContainerProps {
 }
 
 export const Container = styled.div<ContainerProps>`
-  height: 150px;
-  width: 150px;
+  height: 100%;
+  width: 100%;\
+  min-width:40px;
+  max-width:100px;
+  min-height:40px;
+  max-height:100px;
   display: flex;
   flex-direction: column;
   border-width: 12px;
@@ -34,8 +38,8 @@ export const Center = styled.div`
 `;
 
 export const Avatar = styled.img`
-  height: 100px;
-  width: 100px;
+  height: 80px;
+  width: 80px;
 `;
 
 export const Boton = styled.div`

@@ -1,11 +1,9 @@
 import { useState } from "react";
 import { PokemonDTO } from "../../../entities/pokemonList";
 import { PokeTeamDTO } from "../../../entities/pokemonApi";
-import { toast } from "react-toastify";
 
-export const useTimeController = () => {
+export const useTimeController = (playerName: string) => {
   const [name, setName] = useState<string>("");
-  const [playerName, setPlayerName] = useState<null | string>(null);
   const [teamName, setTeamName] = useState<null | string>(null);
   const [teamMembers, setTeamMembers] = useState<PokemonDTO[]>([]);
   const [teamMembersList, setTeamMembersList] = useState<string[]>([]);
@@ -35,13 +33,10 @@ export const useTimeController = () => {
     }
   };
 
-  const setPlayerNameAction = () => {
-    setPlayerName(name);
+  const setCreatingTimeOn = (nameTeam: string) => {
+    if (nameTeam) setCreatingTime(true);
   };
 
-  const setCreatingTimeOn = () => {
-    setCreatingTime(true);
-  };
   const setCreatingTimeOff = () => {
     setCreatingTime(false);
     setTeamMembersList([]);
@@ -50,31 +45,29 @@ export const useTimeController = () => {
   };
 
   const saveTime = () => {
-    if (existingTeam) {
-      console.log("atualizar time");
-    } else {
-      if (!playerName) return;
-      if (!teamName) return;
-      const team: PokeTeamDTO = {
-        playerName: playerName,
-        teamMembers: teamMembersList,
-        timeName: teamName,
-      };
+    //aplicar um toast para avisar que nao pode ter time com menos de 1 integrante
+    if (teamMembersList.length < 1) return;
+    if (!playerName) return;
+    if (!teamName) return;
+    const team: PokeTeamDTO = {
+      playerName: playerName,
+      teamMembers: teamMembersList,
+      timeName: teamName,
+    };
 
-      const requestOptions = {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(team),
-      };
+    const requestOptions = {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(team),
+    };
 
-      fetch("http://localhost:4444/pokedex/teams", requestOptions).then(
-        (result) => {
-          if (result.status === 201) resetChoices(true);
-          else
-            console.log("algum erro aconteceu e nao foi possivel criar o time");
-        }
-      );
-    }
+    fetch("http://localhost:4444/pokedex/teams", requestOptions).then(
+      (result) => {
+        if (result.status === 201) resetChoices(true);
+        else
+          console.log("algum erro aconteceu e nao foi possivel criar o time");
+      }
+    );
   };
 
   const resetChoices = (result: boolean) => {
@@ -83,36 +76,27 @@ export const useTimeController = () => {
     }
   };
 
-  const listTimes = () => {
+  const listTimesByPlayerName = (playerName: string) => {
     const requestOptions = {
       method: "GET",
       headers: { "Content-Type": "application/json" },
     };
 
-    fetch("http://localhost:4444/pokedex/teams", requestOptions).then(
-      async (result) => {
-        if (result.status === 200) {
-          console.log(await result.json())
-        }
-        else
-          console.log("algum erro aconteceu e nao foi possivel criar o time");
-      }
-    );
-  };
-
-  const atualizarTimes = () => {
-    //vai receber o comando de qual time e, e iniciar a reconfiguracao do mesmo
-  };
-
-  const deleteTime = () => {
-    //vai receber o comando de qual time e, e deletar o registro do mesmo
+    fetch(
+      `http://localhost:4444/pokedex/teams?playerName=${playerName}`,
+      requestOptions
+    ).then(async (result) => {
+      if (result.status === 200) {
+        console.log(await result.json());
+      } else
+        console.log("algum erro aconteceu e nao foi possivel criar o time");
+    });
   };
 
   return {
     name,
     playerName,
     setName,
-    setPlayerNameAction,
     creatingTime,
     setCreatingTimeOn,
     setCreatingTimeOff,
@@ -120,6 +104,7 @@ export const useTimeController = () => {
     teamMembersList,
     saveTime,
     setTeamName,
-    listTimes
+    listTimesByPlayerName,
+    resetChoices,
   };
 };

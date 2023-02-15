@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { NavigatorPokedex } from "../../../components/NavigatorPokedex";
 import { TimeNameComponent } from "../../../components/TimeName";
 import { PokemonDTO } from "../../../entities/pokemonList";
@@ -5,12 +6,9 @@ import { useTimeController } from "../controller/useApiController";
 import { usePokedexController } from "../controller/usePokedexController";
 import { ActionDivPokemons } from "../styles";
 
-export const TimeManagerPage = () => {
+export const TimeManagerPage = ({ playerName }: { playerName: string }) => {
   const {
-    name,
-    playerName,
     setName,
-    setPlayerNameAction,
     creatingTime,
     setCreatingTimeOn,
     setCreatingTimeOff,
@@ -18,8 +16,9 @@ export const TimeManagerPage = () => {
     teamMembersList,
     saveTime,
     setTeamName,
-    listTimes,
-  } = useTimeController();
+    resetChoices,
+  } = useTimeController(playerName);
+
   const {
     nextPageSelect,
     backPageSelect,
@@ -27,6 +26,11 @@ export const TimeManagerPage = () => {
     renderIconPokemons,
     pokemonsData,
   } = usePokedexController();
+
+  useEffect(() => {
+    return () => resetChoices(true);
+  }, []);
+
   return (
     <>
       {creatingTime ? (
@@ -50,6 +54,13 @@ export const TimeManagerPage = () => {
           >
             SAVE
           </button>
+          <button
+            onClick={() => {
+              resetChoices(true);
+            }}
+          >
+            CANCEL
+          </button>
           <NavigatorPokedex
             page={pageNumber}
             next={nextPageSelect}
@@ -59,8 +70,7 @@ export const TimeManagerPage = () => {
         </>
       ) : (
         <TimeNameComponent
-          action={() => setCreatingTimeOn()}
-          setNameTeam={setTeamName}
+          action={(value:string) => setCreatingTimeOn(value)}
         />
       )}
     </>
