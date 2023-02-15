@@ -13,7 +13,6 @@ export const useTimeController = (playerName: string) => {
   const [teamMembersList, setTeamMembersList] = useState<string[]>([]);
 
   const [creatingTime, setCreatingTime] = useState<boolean>(false);
-  const [existingTeam, setExistingTeam] = useState<number | null>(null);
 
   const pushOrRemovePokemonToTeam = (pokemon: PokemonDTO) => {
     //aplicar as regras
@@ -43,7 +42,7 @@ export const useTimeController = (playerName: string) => {
 
   const setCreatingTimeOn = (nameTeam: string) => {
     if (nameTeam) setCreatingTime(true);
-    setTeamName(nameTeam);
+    setTeamName(nameTeam)
   };
 
   const setCreatingTimeOff = () => {
@@ -54,6 +53,7 @@ export const useTimeController = (playerName: string) => {
   };
 
   const saveTime = () => {
+    
     //aplicar um toast para avisar que nao pode ter time com menos de 1 integrante
     if (teamMembersList.length < 1) return;
     if (!playerName) return;
@@ -64,7 +64,7 @@ export const useTimeController = (playerName: string) => {
       teamMembers: teamMembers,
       timeName: teamName,
     };
-
+    console.log(team)
     const requestOptions = {
       method: "POST",
       headers: { "Content-Type": "application/json" },

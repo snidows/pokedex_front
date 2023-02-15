@@ -1,5 +1,9 @@
 import { useEffect, useState } from "react";
-import { PokeTeamsDTO, PokemonData } from "../../../entities/pokemonTeams";
+import {
+  PokeTeam,
+  PokeTeamsDTO,
+  PokemonData,
+} from "../../../entities/pokemonTeams";
 import { PokemonDTO } from "../../../entities/pokemonList";
 
 export const useTeamListController = (playerName: string) => {
@@ -17,40 +21,26 @@ export const useTeamListController = (playerName: string) => {
     ).then(async (result) => {
       if (result.status === 200) {
         const resultTeams = (await result.json()) as PokeTeamsDTO[];
+        resultTeams.forEach((team_element, index) => {
+          const pokemons_teams: PokeTeam[] = [];
+          //aqui eu tive de deixar any, because o tipo que o banco salva, e um JSON stringyfied, ai preciso converter para o objeto novamente
+          team_element.teamMembers.forEach((poke: any) => {
+            pokemons_teams.push(JSON.parse(poke) as PokeTeam);
+          });
+          resultTeams[index].teamMembers = pokemons_teams;
+        });
         setTeams(resultTeams);
       } else console.log("nao foi possivel buscar os times");
     });
   };
 
-  // const getPokemonDataByPokemonNameList = () => {
-  //   const requestOptions = {
-  //     method: "GET",
-  //     headers: { "Content-Type": "application/json" },
-  //   };
-  //   if (!teams) return;
-
-  //   teams.forEach((team, index) => {
-  //     team.teamMembers.forEach((pokemon) => {
-  //       fetch(
-  //         `${process.env.REACT_APP_POKEMON_GET as string}${pokemon}`,
-  //         requestOptions
-  //       ).then(async (result) => {
-  //         if (result.status === 200) {
-  //           const resultData = (await result.json()) as PokemonDTO;
-  //         } else
-  //           console.log("algum erro aconteceu e nao foi possivel criar o time");
-  //       });
-  //     });
-  //   });
-  // };
-
   useEffect(() => {
     if (!teams) listTimesByPlayerName();
+    console.log(teams);
     // else {
     //   getPokemonDataByPokemonNameList();
     // }
   }, [teams]);
 
-
-  return {teams };
+  return { teams };
 };
