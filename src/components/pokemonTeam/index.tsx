@@ -1,16 +1,18 @@
-import { PokeTeam, PokemonData } from "../../entities/pokemonTeams";
+import { PokeTeam } from "../../entities/pokemonTeams";
 import { PokeIcon } from "../PokeIcon";
 import { Container, NameDiv, PokemonAvatarContainer } from "./styles";
 
 export const PokeTeamComponent = ({
   teamName,
   teamList,
+  action
 }: {
   teamName: string;
   teamList: PokeTeam[];
+  action:Function
 }) => {
   return (
-    <Container>
+    <Container onClick={()=>action()}>
       <NameDiv>{teamName}</NameDiv>
       <PokemonAvatarContainer>
         {teamList.map((pokemonName) => {

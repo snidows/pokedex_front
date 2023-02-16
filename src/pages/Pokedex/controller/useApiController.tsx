@@ -64,7 +64,6 @@ export const useTimeController = (playerName: string) => {
       teamMembers: teamMembers,
       timeName: teamName,
     };
-    console.log(team)
     const requestOptions = {
       method: "POST",
       headers: { "Content-Type": "application/json" },
