@@ -2,7 +2,6 @@ import { useState } from "react";
 import { PokemonDTO } from "../../../entities/pokemonList";
 import {
   PokeTeam,
-  PokeTeamsDTO,
   PokeTeamsInputDTO,
 } from "../../../entities/pokemonTeams";
 
@@ -47,14 +46,14 @@ export const useTimeController = (playerName: string) => {
 
   const setCreatingTimeOff = () => {
     setCreatingTime(false);
+    setTeamName(null);
     setTeamMembersList([]);
     setTeamMembers([]);
-    setTeamName(null);
+    
   };
 
   const saveTime = () => {
     
-    //aplicar um toast para avisar que nao pode ter time com menos de 1 integrante
     if (teamMembersList.length < 1) return;
     if (!playerName) return;
     if (!teamName) return;
@@ -72,7 +71,7 @@ export const useTimeController = (playerName: string) => {
 
     fetch("http://localhost:4444/pokedex/teams", requestOptions).then(
       (result) => {
-        if (result.status === 201) resetChoices(true);
+        if (result.status === 200) resetChoices(true);
         else
           console.log("algum erro aconteceu e nao foi possivel criar o time");
       }
